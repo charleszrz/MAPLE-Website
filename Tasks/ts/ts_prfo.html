@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition State Method: PRFO - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+				<ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="general.html">About MAPLE</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Transition State Method: PRFO</h1>
+                    <p class="tagline">Partitioned Rational Function Optimization for transition-state search.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>PRFO (Partitioned Rational Function Optimization) in this code is implemented as an RS-PRFO transition-state search: it combines dual-shift PRFO steps with a trust-region framework and mode-following in mass-weighted coordinates. At each accepted step, the Cartesian Hessian is recomputed, mass-weighted, and diagonalized to track the lowest-curvature mode and adapt the trust radius according to the agreement between the quadratic model and the actual energy change. The parameters listed below are internal control parameters that are fixed in the current implementation; they can only be changed by editing the source code, not via input keywords.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Internal Control Parameters</h2>
+                    
+                    <h3>max_iter</h3>
+                    <p>Maximum number of TS search iterations. Limits the number of accepted RS-PRFO steps before the transition-state search stops.</p>
+                    <p><strong>(default: max_iter=256)</strong></p>
+
+                    <h3>trust_radius</h3>
+                    <p>Initial trust-region radius (MW coordinates). Sets the initial bound on the step length in mass-weighted coordinate space; larger values allow more aggressive early steps.</p>
+                    <p><strong>(default: trust_radius=0.2)</strong></p>
+
+                    <h3>trust_min</h3>
+                    <p>Minimum trust-region radius. Smallest allowed trust radius; when the model is poor, the radius is repeatedly shrunk but never below this value, preventing vanishingly small steps.</p>
+                    <p><strong>(default: trust_min=1.0e-3)</strong></p>
+
+                    <h3>trust_max</h3>
+                    <p>Maximum trust-region radius. Upper bound for the trust radius; when the quadratic model is accurate and steps lie on the boundary, the radius can be expanded but not beyond this limit.</p>
+                    <p><strong>(default: trust_max=1.0)</strong></p>
+
+                    <h3>eta_shrink</h3>
+                    <p>Model-quality threshold for shrinking. If the ratio ρ between the actual and predicted energy change is too small or non-finite, the trial step is rejected, the geometry is rolled back, and the trust radius is reduced.</p>
+                    <p><strong>(default: eta_shrink=0.75)</strong></p>
+
+                    <h3>eta_expand</h3>
+                    <p>Model-quality threshold for expansion. If ρ is sufficiently large and the step lies on the trust-region boundary, the step is accepted and the trust radius is expanded for the next iteration to accelerate convergence.</p>
+                    <p><strong>(default: eta_expand=1.75)</strong></p>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Output Files</h2>
+                    <p>When using ts(method=prfo), the PRFO transition-state search produces one main human-readable output file:</p>
+                    
+                    <h3>Main Output File: *.out</h3>
+                    <p>All information about the transition-state search, including the evolving geometries and convergence diagnostics, is contained in the main output file.</p>
+                    
+                    <p class="code-example">Example:<br>Iteration: 1<br>lambda1: N/A(PRFO), lambda2: N/A(PRFO)<br>lowest eigenvalue: -0.334377259016037, second lowest eigenvalue: -0.1735847294330597<br><br>Coordinates<br>----------------------------------------------------------------------<br>0   C               -0.8258              -1.1301               0.1440<br>1   C                1.2480               0.0799               0.0361<br>2   C               -0.7595               1.7950               0.7768<br>...<br><br>Energy:               -1970.331031 Convergence criteria  Is converged<br>Maximum Force:            0.053068     0.000450                No<br>RMS Force:                 0.027608     0.000300                No<br>Maximum Displacement:      0.042010     0.001800                No<br>RMS Displacement:          0.042640     0.001200                No</p>
+
+                    <h3>Explanation:</h3>
+                    <ul>
+                        <li>"Iteration: 1" is the index of the current accepted PRFO step. If further iterations follow, the transition-state search has not yet converged.</li>
+                        <li>"lambda1 / lambda2" are reserved for other TS methods and appear as "N/A(PRFO)" here; they can be ignored for PRFO.</li>
+                        <li>"lowest eigenvalue" and "second lowest eigenvalue" are the two smallest Cartesian Hessian eigenvalues at this geometry. A well-converged first-order TS is expected to have one dominant negative eigenvalue and all other eigenvalues positive or close to zero.</li>
+                        <li>The "Coordinates" table lists the current Cartesian coordinates <strong>(Å)</strong> after this PRFO step and can be used to inspect structural changes along the TS search.</li>
+                        <li>"Energy" is the total energy at this geometry; it is mainly useful to monitor changes between successive iterations rather than as an absolute value. The four lines "Maximum/RMS Force" and "Maximum/RMS Displacement" report the current values versus their thresholds. In normal termination, the TS is considered converged and the PRFO search stops when all four entries are marked "Yes" in the final iteration.</li>
+                    </ul>
+
+                    <h3>PRFO Geometry Trajectory File: prfo.xyz</h3>
+                    <p>All geometries generated along the PRFO transition-state search are stored in this multi-frame XYZ file and can be visualized as a structural trajectory in standard molecular viewers.</p>
+                    
+                    <p class="code-example">Example:<br>22<br>Frame 1: 1<br>C  -0.8675   -1.1212   0.1451<br>C  1.2063   0.0888   0.0375<br>C  -0.8012   1.8039   0.7777<br>...</p>
+
+                    <h3>Explanation:</h3>
+                    <ul>
+                        <li>The first line ("22") is the number of atoms in the system.</li>
+                        <li>The second line ("Frame 1: 1") is a free comment line used as a frame label. It typically encodes the frame index along the PRFO search and/or an internal iteration counter; it has no effect on the coordinates and can be ignored by most visualization programs.</li>
+                        <li>Each subsequent line in the frame gives one atom: the element symbol in the first column followed by the x, y, z Cartesian coordinates (in <strong>Å</strong>).</li>
+                        <li>If the file contains multiple frames, the same pattern is repeated for each geometry. Such a file can be loaded into visualization software as a trajectory to inspect how the structure evolves along the PRFO transition-state search.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

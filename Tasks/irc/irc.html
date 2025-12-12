@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intrinsic Reaction Coordinate (IRC) - MAPLE</title>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="../../index.html"><img src="../../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="../../general.html">About MAPLE</a></li>
+                    <li><a href="../../documentation.html">Documentation</a></li>
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Module: Intrinsic Reaction Coordinate (irc)</h1>
+                </section>
+
+                <section class="new-section">
+                    <p>The IRC module computes the intrinsic reaction path starting from a transition-state (TS) geometry by following the steepest-descent direction defined by the TS's unique imaginary vibrational mode. This mode corresponds to the negative eigenvalue of the mass-weighted Hessian and provides the correct reaction coordinate. The module currently supports one algorithm: the <span style="color: #ff0000;"><a href="functions/irc/irc_gs.html">gs</a></span> (Gradient Stepping) method.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Input Parameters</h2>
+                    <p>The IRC task is invoked with:</p>
+                    <p><code>#irc(method=gs)</code></p>
+                    <p>The above represents the default settings. Adjustable parameters include:</p>
+                    <h3>method</h3>
+                    <p>IRC integration algorithm</p>
+                    <p>= <strong style="color: #ff0000;">gs</strong> (default)</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Output File Contents</h2>
+                    <p>Two categories of information are printed:</p>
+                    <ul>
+                        <li><strong>Negative Mode Selection</strong></li>
+                    </ul>
+                    <p>Reports the unique imaginary vibrational mode that defines the reaction coordinate. This mode comes from the negative eigenvalue of the mass-weighted Hessian at the transition state.</p>
+                    <p>Example:</p>
+                    <p><code>Selected eigenmode #1 (λ = -8.019604e-03 in MW basis)</code></p>
+                    <ul>
+                        <li><strong>IRC Path Iterations</strong></li>
+                    </ul>
+                    <p>Lists the step-by-step evolution along the IRC path, including: the energy E(Eh), the relative energy change dE(kcal/mol), the maximum force max(|G|), and the root-mean-square force RMS(G). Convergence thresholds for max(|G|) and RMS(G) are also shown; meeting both indicates arrival at a minimum along that direction.</p>
+                    <p>Example:</p>
+                    <p><code>Iteration   E(Eh)      dE(kcal/mol)  max(|G|)   RMS(G)</code></p>
+                    <p><code>Convergence thresholds                0.002000  0.000500</code></p>
+                    <p><code>  0    -382.552193      0.00        0.003218   0.001205</code></p>
+                    <p><code>  1    -382.557801     -3.52        0.002145   0.000734</code></p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

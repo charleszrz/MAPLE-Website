@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single-Point Energy - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="general.html">About MAPLE</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Module: Single-Point Energy (sp)</h1>
+                    <p class="tagline">Compute the electronic energy for a fixed geometry.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>This module is used to compute the electronic energy for a fixed geometry.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Input Parameters</h2>
+                    <h3>#sp</h3>
+                    <p>This is the control command to trigger the single-point energy calculation. The command does not accept any additional parameters; you only need to include this line in the input file to initiate the calculation. If no other task type is specified in the input file, the program will default to executing the sp task.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Output File</h2>
+                    <p>The output file will contain the calculated electronic energy, in <strong>Hartree</strong> units.</p>
+                    <p class="code-example">Example:<br>Energy: -10434.811113387317</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

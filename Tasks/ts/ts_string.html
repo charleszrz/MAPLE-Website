@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition State Method: String - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                  <li><a href="#tutorials">User Guide</a></li>
+                  <li><a href="general.html">About MAPLE</a></li>
+                  <li><a href="documentation.html">Documentation</a></li>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="#articles">Articles</a></li>
+                  <li><a href="#download">Downloads</a></li>
+                  <li><a href="#issues">Report an issue</a></li>
+                  <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Transition State Method: String</h1>
+                    <p class="tagline">Growing String Method for reaction path construction between reactant and product geometries.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>The String (GSM) method is an engineering implementation of the Growing String Method. It constructs a reaction path between a given reactant and product geometry via two-ended adaptive growth, followed by equal-arc reparametrization and local transition-state refinement using a PRFO/RFO optimizer. Key algorithmic features include Kabsch alignment of endpoints, two-ended adaptive growth with constrained mini-relaxation in the hyperplane orthogonal to the local path direction, energy-weighted tangents, a dynamic growth policy (including side pausing and forced connector pulls), and a final PRFO refinement starting from the highest-energy image (HEI).</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Adjustable Parameters</h2>
+                    
+                    <h3>grow_step</h3>
+                    <p>Initial growth step length (Å); sets the typical displacement used to generate new images from each end during the GSM growth phase. Larger values grow the path faster but more roughly; smaller values give more conservative, smoother growth.</p>
+                    <p><strong>(default: grow_step=0.12)</strong></p>
+
+                    <h3>grow_step_min</h3>
+                    <p>Minimum growth step (Å); the step size will not shrink below this value during backtracking, and very close endpoints will not move by less than this. Usually only adjusted if growth repeatedly stalls or becomes unstable.</p>
+                    <p><strong>(default: grow_step_min=0.02)</strong></p>
+
+                    <h3>grow_backtrack</h3>
+                    <p>Backtracking factor; when a trial step is judged too aggressive (too uphill or too strained), the step size is multiplied by this factor and retried. Smaller values shrink more aggressively.</p>
+                    <p><strong>(default: grow_backtrack=0.5)</strong></p>
+
+                    <h3>grow_relax_iters</h3>
+                    <p>Maximum number of iterations for each local mini-relaxation of a new image during growth. Larger values allow more thorough local relaxation but increase cost per step.</p>
+                    <p><strong>(default: grow_relax_iters=10)</strong></p>
+
+                    <h3>grow_relax_tol</h3>
+                    <p>Force tolerance (Eh/Å) for local mini-relaxations; controls how tightly each new image is relaxed. Smaller values enforce stricter local convergence and smoother forces, at higher cost.</p>
+                    <p><strong>(default: grow_relax_tol=0.0025)</strong></p>
+
+                    <h3>grow_energy_toll</h3>
+                    <p>Maximum allowed energy increase (Eh) for a trial growth step. If a single step raises the energy more than this tolerance, the step is regarded as too uphill and will be reduced and retried.</p>
+                    <p><strong>(default: grow_energy_toll=0.001)</strong></p>
+
+                    <h3>pause_imbalance</h3>
+                    <p>Threshold for the difference in image counts on the two ends. If |n_left − n_right| exceeds this value, growth on the longer side is temporarily paused so that the shorter side can catch up.</p>
+                    <p><strong>(default: pause_imbalance=2)</strong></p>
+
+                    <h3>refine_end_every</h3>
+                    <p>Frequency (in global growth iterations) of extra local refinement at the endpoints. Every this many growth steps, the most recent images on both sides are additionally relaxed. Use 0 to disable.</p>
+                    <p><strong>(default: refine_end_every=3)</strong></p>
+
+                    <h3>merge_threshold</h3>
+                    <p>Merge threshold (Å); when the average per-atom distance between the last images on the left and right sides falls below this value, growth is considered complete and the two sides are merged.</p>
+                    <p><strong>(default: merge_threshold=0.5)</strong></p>
+
+                    <h3>n_images</h3>
+                    <p>Total number of images in the final, reparameterized path, including fixed reactant and product endpoints. Larger values give a higher-resolution path at increased computational cost; must be at least 2.</p>
+                    <p><strong>(default: n_images=9)</strong></p>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Output Files</h2>
+                    <p>The String method produces several output files containing information about the reaction path construction and final transition state.</p>
+                    
+                    <h3>Main Output File: *.out</h3>
+                    <p>Contains detailed information about the string growth process, including convergence diagnostics and final transition state properties.</p>
+
+                    <h3>Trajectory Files</h3>
+                    <p>Various XYZ trajectory files are generated showing the evolution of the reaction path during the string method calculation.</p>
+
+                    <h3>Final Path</h3>
+                    <p>The final optimized reaction path with the identified transition state structure is written to output files for further analysis.</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRC Method: GS - MAPLE</title>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="../../index.html"><img src="../../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="../../general.html">About MAPLE</a></li>
+                    <li><a href="../../documentation.html">Documentation</a></li>
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>IRC Method: GS</h1>
+                </section>
+
+                <section class="new-section">
+                    <p>The GS (Gradient Stepping) method is the default integrator for intrinsic reaction coordinate (IRC) calculations. It follows the transition state geometry downhill along the unique imaginary vibrational mode and refines the trajectory using perpendicular force correction and adaptive step-size control. This method is suitable for verifying whether the transition state correctly connects reactants and products, and for analyzing the reaction pathway's structural and energetic evolution.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Default Parameters</h2>
+                    <pre><code>#irc(method=gs,
+    target_mode=1,
+    init_delta_E_mEh=2.0,
+    use_quadratic_init=true,
+    sd_len_bohr=0.150,
+    sd_len_min_bohr=0.050,
+    sd_len_max_bohr=0.300,
+    corr_scale=0.333,
+    grow=1.20,
+    shrink=0.80,
+    do_parabolic_fit=true,
+    tol_maxf=0.002,
+    tol_rmsf=0.000500,
+    max_points=100,
+    print_each=true,
+    write_traj=true)</code></pre>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Adjustable Parameters</h2>
+                    <h3>target_mode</h3>
+                    <p>Selects the imaginary vibrational mode used to initiate the IRC (1 = most negative eigenvalue).</p>
+
+                    <h3>init_delta_E_mEh</h3>
+                    <p>Energy target for determining the magnitude of the initial displacement along the imaginary mode.</p>
+
+                    <h3>use_quadratic_init</h3>
+                    <p>Enables curvature-based initialization using Hessian information</p>
+                    <ul>
+                        <li><strong>= true (default)</strong></li>
+                        <li><strong>= false</strong></li>
+                    </ul>
+
+                    <h3>sd_len_bohr</h3>
+                    <p>Base step length controlling the primary stepping distance along the reaction coordinate.</p>
+
+                    <h3>sd_len_min_bohr</h3>
+                    <p>Minimum allowed adaptive step size to prevent stagnation during integration</p>
+
+                    <h3>sd_len_max_bohr</h3>
+                    <p>Maximum allowed adaptive step size to avoid unphysical structural jumps.</p>
+
+                    <h3>corr_scale</h3>
+                    <p>Relative scaling factor for the perpendicular correction applied to remove drift from the true reaction path.</p>
+
+                    <h3>grow</h3>
+                    <p>Adaptive scaling factor that increases the step length when the energy decreases smoothly.</p>
+
+                    <h3>shrink</h3>
+                    <p>Adaptive scaling factor that reduces the step length when uphill movement or unstable stepping is detected.</p>
+
+                    <h3>do_parabolic_fit</h3>
+                    <p>Enables parabolic interpolation when an uphill step occurs to recover the downhill direction</p>
+                    <ul>
+                        <li><strong>= true (default)</strong></li>
+                        <li><strong>= false</strong></li>
+                    </ul>
+
+                    <h3>tol_maxf</h3>
+                    <p>Convergence threshold for the maximum force component along the path.</p>
+
+                    <h3>tol_rmsf</h3>
+                    <p>Convergence threshold for the RMS force component; must be satisfied together with tol_maxf.</p>
+
+                    <h3>max_points</h3>
+                    <p>Maximum number of macro iterations for each direction (forward and backward).</p>
+
+                    <h3>print_each</h3>
+                    <p>Controls whether iterative energy and gradient information is printed during integration</p>
+                    <ul>
+                        <li><strong>= true (default)</strong></li>
+                        <li><strong>= false</strong></li>
+                    </ul>
+
+                    <h3>write_traj</h3>
+                    <p>Controls writing the IRC trajectory to disk (forward, backward, and merged path)</p>
+                    <ul>
+                        <li><strong>= true (default)</strong></li>
+                        <li><strong>= false</strong></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

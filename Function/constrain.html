@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function: Constrain - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="general.html">About MAPLE</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Function: Constrain</h1>
+                </section>
+
+                <section class="new-section">
+                    <p>In computational chemistry and molecular simulations, constraints are often applied to impose certain geometric restrictions on atoms or molecules during optimization or dynamics calculations. The Constrain function, in this context, is used to manage and apply constraints to various atomic coordinates or molecular properties, typically with the aim of fixing certain variables (such as atom positions, bond lengths, angles, etc.) or keeping them within a specified range.</p>
+                    <p>When to Use Constrain? The Constrain function is typically used when you want to fix certain geometric properties during simulations. For example, during geometry optimization, you may wish to keep specific attributes, such as bond lengths or angles, constant. It is also essential in scan tasks, where you may want to fix certain degrees of freedom while scanning parameters like bond lengths or dihedral angles. Additionally, in reaction mechanism studies, certain atoms or bonds can be held in place to ensure they stay within a specific configuration while allowing the rest of the system to relax. Other situations may involve controlling molecular structures for various purposes, such as optimizing systems with constrained variables or studying specific molecular behaviors.</p>
+                    <p>Constrain functions are added in the post-processing section of the `.inp` file.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>Explanation of Each Command and Option:</h2>
+                    
+                    <h3>C Command: Fix an Atom</h3>
+                    <p>This command fixes the position of atom i in the simulation, meaning its position will not change during the calculation.</p>
+                    <p><strong>Format: C i</strong></p>
+                    <p><code>Example: C 3</code></p>
+
+                    <h3>B Command: Fix a Bond Length</h3>
+                    <p>This fixes the bond angle between atoms i, j, and k. The angle formed by the bond vectors from j to i and j to k will remain fixed during the simulation.</p>
+                    <p><strong>Format: B i j</strong></p>
+                    <p><code>Example: B 1 5</code></p>
+
+                    <h3>A Command: Fix a Bond Angle</h3>
+                    <p>This fixes the dihedral angle formed by atoms i, j, k, and l. The torsion angle between these atoms is held constant throughout the simulation.</p>
+                    <p><strong>Format: A i j k</strong></p>
+                    <p><code>Example: A 2 1 4</code></p>
+
+                    <h3>D Command: Fix a Dihedral Angle</h3>
+                    <p>This fixes the dihedral angle formed by atoms i, j, k, and l. The torsion angle between these atoms is held constant throughout the simulation.</p>
+                    <p><strong>Format: D i j k l</strong></p>
+                    <p><code>Example: D 1 2 3 6</code></p>
+
+                    <h3>S Command: Scanning Path</h3>
+                    <p>The S command, used only in scan tasks, specifies which internal coordinate (bond length, bond angle, or dihedral angle) will be scanned and defines the starting value, step size, and number of steps.</p>
+                    <p><strong>Format: S i j step steps</strong></p>
+                    <p><code>Example: S 1 2 0.05 5</code></p>
+                </section>
+
+                <section class="new-section">
+                    <h2>Practical Example of Usage:</h2>
+                    <p>Imagine you're running a geometry optimization task and you want to hold a specific bond length constant while allowing the rest of the system to relax. You would include the following in your input file:</p>
+                    <p><code>B 2 5</code></p>
+                    <p>This ensures that during optimization, the bond length between atoms 2 and 5 is fixed, while the rest of the system undergoes optimization.</p>
+                    
+                    <h3>Multi-dimensional Scan Example:</h3>
+                    <p>If you want to scan both a bond length and an angle, you could include multiple S commands in your input file. For example:</p>
+                    <p><code>S 1 2 0.05 5</code></p>
+                    <p><code>S 2 1 3 10.0 6</code></p>
+                    <p>This will scan the bond length between atoms 1 and 2, and also scan the bond angle between atoms 1, 2, and 3.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>Overall, the Constrain function is crucial when you need to apply geometric restrictions or scanning paths in your simulations. Whether you're fixing atoms, bond lengths, angles, or scanning specific coordinates, this functionality ensures you have the flexibility to control molecular structures during optimization and dynamics tasks.</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

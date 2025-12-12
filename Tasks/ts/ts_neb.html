@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition State Method: NEB - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="general.html">About MAPLE</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Transition State Method: NEB</h1>
+                    <p class="tagline">This functionality is currently under development undergoing testing and validation.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>TS-NEB is a method designed to locate both the transition state (TS) of a chemical reaction and the corresponding minimum energy path (MEP) on the potential energy surface. Starting from given reactant (R) and product (P) structures, TS-NEB constructs a series of intermediate "images" and optimizes them to trace the reaction pathway. By identifying the highest-energy image (HEI) along the optimized path and applying either the climbing-image NEB (CINEB) scheme or an additional TS refinement procedure (such as PRFO/RFO), the method yields an accurate estimate of the transition-state geometry. TS-NEB also provides detailed energetic and geometric information along the reaction coordinate, enabling users to analyze reaction mechanisms, bond-breaking and bond-forming events, and other key features of the potential energy surface.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Adjustable Parameters</h2>
+                    
+                    <h3>n_images</h3>
+                    <p>Total number of images along the path. Controls the total number of NEB images including the fixed reactant and product endpoints. More images give a smoother, better-resolved reaction path but increase computational cost.</p>
+                    <p><strong>(default: n_images=9)</strong></p>
+
+                    <h3>k_spring</h3>
+                    <p>Spring constant between neighboring images. Sets the stiffness of the harmonic springs that connect adjacent images along the band. Larger values keep images more evenly spaced but can make convergence slightly harder.</p>
+                    <p><strong>(default: k_spring=0.2)</strong></p>
+
+                    <h3>maxiter</h3>
+                    <p>Maximum number of NEB optimization iterations. Limits the number of L-BFGS optimization iterations used to relax the NEB band. If this limit is reached before convergence, the current path is written and (optional) refinement may be skipped.</p>
+                    <p><strong>(default: max_iter=256)</strong></p>
+
+                    <h3>lbfgs_m</h3>
+                    <p>L-BFGS history size. Number of (s, y) pairs stored in the L-BFGS optimizer. Larger values can improve search directions but increase memory and overhead.</p>
+                    <p><strong>(default: lbfgs_m=5)</strong></p>
+
+                    <h3>step0</h3>
+                    <p>Initial step length in optimization. Sets the initial maximum displacement per degree of freedom in the internal-coordinate vector during NEB optimization. Larger values allow more aggressive early moves.</p>
+                    <p><strong>(default: step0=0.2)</strong></p>
+
+                    <h3>step_min</h3>
+                    <p>Minimum allowed step length. Lower bound for the step length used by the optimizer. Intended to prevent the algorithm from taking vanishingly small steps when close to convergence.</p>
+                    <p><strong>(default: step_min=5.0e-4)</strong></p>
+
+                    <h3>step_max</h3>
+                    <p>Maximum allowed step length. Upper bound for the step length used by the optimizer. Prevents overly large updates that could destabilize the NEB path or cause atoms to move unphysically far in a single iteration.</p>
+                    <p><strong>(default: step_max=1.0)</strong></p>
+
+                    <h3>neb_f_max_th</h3>
+                    <p>Max projected-force threshold for NEB. Convergence criterion on the maximum absolute projected NEB force |Fp| over all internal images. NEB is considered converged only when this and the RMS threshold are both satisfied.</p>
+                    <p><strong>(default: neb_f_max_th=5.0e-3)</strong></p>
+
+                    <h3>neb_f_rms_th</h3>
+                    <p>RMS projected-force threshold for NEB. Convergence criterion on the root-mean-square of the projected NEB forces over all internal images. Used together with neb_f_max_th to decide NEB convergence.</p>
+                    <p><strong>(default: neb_f_rms_th=1.0e-3)</strong></p>
+
+                    <h3>cineb_f_max_th</h3>
+                    <p>Max projected-force threshold for CINEB. Target threshold on the maximum |Fp| during climbing-image NEB refinement. Typically slightly tighter or comparable to the plain NEB threshold to improve TS localization.</p>
+                    <p><strong>(default: cineb_f_max_th=4.0e-3)</strong></p>
+
+                    <h3>cineb_f_rms_th</h3>
+                    <p>RMS projected-force threshold for CINEB. Target RMS projected-force threshold during climbing-image NEB refinement. Controls how tightly the climbing image and the rest of the band are converged.</p>
+                    <p><strong>(default: cineb_f_rms_th=2.0e-3)</strong></p>
+
+                    <h3>initial_opt</h3>
+                    <p>Pre-optimization of endpoints. If set to True, the reactant and product structures are first relaxed with an internal L-BFGS optimizer before building the NEB path. This can improve robustness if the supplied endpoints are not well optimized.</p>
+                    <p><strong>(default: initial_opt=False)</strong></p>
+
+                    <h3>refine</h3>
+                    <p>Post-NEB refinement mode. Selects an optional refinement stage after a converged NEB run.</p>
+                    <ul>
+                        <li><strong>=None (default)</strong> – no further refinement; plain NEB only</li>
+                        <li><strong>=cineb</strong> – perform climbing-image CINEB starting from the converged path</li>
+                        <li><strong>=nebts</strong> – perform CINEB and then an additional TS refinement (RFO-based) on the highest-energy image</li>
+                    </ul>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Output Files</h2>
+                    <p>When using ts(method=neb) for NEB-TS, the following output files are generated:</p>
+                    
+                    <h3>MEP File (*_nebts_mep.xyz)</h3>
+                    <p>The file records the atomic coordinates of each image along the minimum energy path (MEP).</p>
+                    <p><strong>Example:</strong></p>
+                    <pre><code>Image 0  Energy = -29.67961370
+C   0.8260657415  0.5508603911 -0.1261794589
+H   0.4554445983  1.2417513435 -0.8784317668
+O   0.5680753083  1.0246514429  1.1187434847
+...</code></pre>
+                    <p><strong>Note:</strong></p>
+                    <ul>
+                        <li>Image 0: Represents the 0th image in the path (reactant endpoint).</li>
+                        <li>Energy: The energy value of this image, in Hartree (Eh).</li>
+                        <li>Each line contains atomic coordinates in the format: element symbol + X, Y, Z coordinates (in Angstroms).</li>
+                    </ul>
+
+                    <h3>Transition State Structure File (*_nebts_ts.xyz)</h3>
+                    <p>This file records the final optimized transition state (TS) structure obtained from the NEB calculation, including refinement through methods like RS-PRFO. It contains the highest energy image (HEI) after optimization.</p>
+                    <p>The structure is detailed in the same format as the NEB-TS MEP File.</p>
+
+                    <h3>Trajectory File (*_image_traj.xyz)</h3>
+                    <p>The file records the coordinates of each image along the reaction path for visualization and path analysis. Each image corresponds to an intermediate structure along the path, showing the geometric changes from reactant to product.</p>
+                    <p><strong>Example:</strong></p>
+                    <pre><code>Iter 0 Image 0  Energy = -29.6796137011
+C   0.8260657415  0.5508603911 -0.1261794589
+H   0.4554445983  1.2417513435 -0.8784317668
+O   0.5680753083  1.0246514429  1.1187434847
+...</code></pre>
+                    <p><strong>Note:</strong></p>
+                    <ul>
+                        <li>Iter 0: Represents the result of the 0th iteration.</li>
+                        <li>Image 0: Indicates the 0th image in the path (reactant endpoint).</li>
+                        <li>Energy: The energy value of this image, in Hartree (Eh).</li>
+                    </ul>
+
+                    <h3>Path Summary File (*.out)</h3>
+                    <p>This file records the energy, forces, and convergence information for each image in the NEB calculation. It helps the user understand how the energy and forces change during the optimization process and whether the convergence criteria have been met.</p>
+                    
+                    <h4>Properties of Fixed NEB End Points</h4>
+                    <p><strong>Example:</strong></p>
+                    <pre><code>Properties of fixed NEB end points:
+    Reactant:
+        E               ....   -29.679614 Eh
+        RMS(F)          ....    0.019958 Eh/Angstrom
+        MAX(|F|)        ....    0.038337 Eh/Angstrom
+    Product:
+        E               ....   -29.709697 Eh
+        RMS(F)          ....    0.016525 Eh/Angstrom
+        MAX(|F|)        ....    0.032252 Eh/Angstrom</code></pre>
+                    <p><strong>Note:</strong></p>
+                    <ul>
+                        <li>E: The energy, in Hartree (Eh).</li>
+                        <li>RMS(F): The root-mean-square force, in Eh/Å.</li>
+                        <li>MAX(|F|): The maximum force, in Eh/Å.</li>
+                        <li>Reactant and Product: Represent the energy and force values for the reactant and product endpoints.</li>
+                    </ul>
+
+                    <h4>Reactant XYZ and Product XYZ</h4>
+                    <p><strong>Example:</strong></p>
+                    <pre><code>Reactant XYZ (Angstrom):
+C        0.826066       0.550860      -0.126179
+H        0.455445       1.241751      -0.878432
+O        0.568075       1.024651       1.118743
+...</code></pre>
+                    <p><strong>Note:</strong></p>
+                    <ul>
+                        <li>The coordinates of the reactant and product, in Ångströms, are provided. These structures are the initial and final configurations for the NEB calculation.</li>
+                    </ul>
+
+                    <h4>Alignment Done. RMSD</h4>
+                    <p><strong>Example:</strong></p>
+                    <pre><code>Alignment done. RMSD: 0.898270 (Angstrom)</code></pre>
+                    <p><strong>Note:</strong></p>
+                    <ul>
+                        <li>This section records the root-mean-square deviation (RMSD) after aligning the reactant and product endpoints.</li>
+                    </ul>
+
+                    <h4>Wrote MEP, HEI, and Trajectory Files</h4>
+                    <p><strong>Example:</strong></p>
+                    <pre><code>Wrote MEP to: <MaLePSO_ROOT>/example/ts/neb/inp1_nebts_mep.xyz
+Wrote HEI to: <MaLePSO_ROOT>/example/ts/neb/inp1_hei.xyz
+Wrote trajectory to: <MaLePSO_ROOT>/example/ts/neb/inp1_image_traj.xyz</code></pre>
+                    <p><strong>Note:</strong></p>
+                    <ul>
+                        <li>These paths indicate where the MEP, HEI, and trajectory files are saved, allowing users to access and visualize the results of the NEB calculation.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

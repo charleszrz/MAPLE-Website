@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition State Method: Dimer - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="general.html">About MAPLE</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Transition State Method: Dimer</h1>
+                    <p class="tagline">Local transition-state search algorithm based on minimum-mode following.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>The Dimer method is a local transition-state search algorithm based on minimum-mode following. Starting from a single initial geometry, it rotates a trial direction to follow the lowest-curvature mode and then translates the structure along this mode under a trust region, climbing efficiently toward a first-order saddle point.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Adjustable Parameters</h2>
+                    
+                    <h3>use_hvp</h3>
+                    <p>Hessian–vector backend. If true, the Dimer uses an analytic Hessian–vector product H·n when available; otherwise H·n is evaluated by finite differences controlled by delta.</p>
+                    <ul>
+                        <li><strong>=false (default)</strong></li>
+                        <li><strong>=true</strong></li>
+                    </ul>
+
+                    <h3>delta</h3>
+                    <p>Finite-difference step (Å). Step length Δ along the dimer direction when approximating curvature from forces at R ± Δn.</p>
+                    <p><strong>(default: delta=0.005)</strong></p>
+
+                    <h3>rot_max_iter</h3>
+                    <p>Maximum rotation iterations. Maximum number of inner rotation steps per outer Dimer iteration used to minimize κ = n†Hn.</p>
+                    <p><strong>(default: rot_max_iter=5)</strong></p>
+
+                    <h3>rot_alpha</h3>
+                    <p>Rotation step factor. Controls the step size for updating the dimer orientation along the rotational force; smaller values give more conservative rotations.</p>
+                    <p><strong>(default: rot_alpha=0.5)</strong></p>
+
+                    <h3>rot_fmax_th</h3>
+                    <p>Rotation max-force threshold. Convergence threshold on the maximum component of the rotational force |F_rot| (Eh/Å) during orientation optimization.</p>
+                    <p><strong>(default: rot_fmax_th=1.0e-3)</strong></p>
+
+                    <h3>rot_frms_th</h3>
+                    <p>Rotation RMS-force threshold. Convergence threshold on the RMS rotational force |F_rot|_rms (Eh/Å).</p>
+                    <p><strong>(default: rot_frms_th=5.0e-4)</strong></p>
+
+                    <h3>step0</h3>
+                    <p>Initial step scale. Initial scaling factor for the translational step along the TS search direction.</p>
+                    <p><strong>(default: step0=0.2)</strong></p>
+
+                    <h3>step_max</h3>
+                    <p>Maximum Cartesian displacement (Å). Hard upper limit on the per-iteration atomic displacement; prevents unstable, overly large steps.</p>
+                    <p><strong>(default: step_max=0.15)</strong></p>
+
+                    <h3>trust_radius</h3>
+                    <p>Trust-region radius (Å). Effective maximum step size in the chosen metric; the actual step is restricted by min(trust_radius, step_max) in each iteration.</p>
+                    <p><strong>(default: trust_radius=0.15)</strong></p>
+
+                    <h3>fmax_th</h3>
+                    <p>Max-force threshold. Target convergence threshold on the maximum (Eh/Å) translational force component.</p>
+                    <p><strong>(default: fmax_th=5.0e-3)</strong></p>
+
+                    <h3>frms_th</h3>
+                    <p>RMS-force threshold. Target convergence threshold on the RMS (Eh/Å) translational force.</p>
+                    <p><strong>(default: frms_th=1.0e-3)</strong></p>
+
+                    <h3>kappa_to_flip</h3>
+                    <p>Curvature flip threshold. When κ = n†Hn falls below this value, the parallel force component is flipped so that the Dimer climbs along the negative-curvature mode toward the saddle.</p>
+                    <p><strong>(default: kappa_to_flip=0.0)</strong></p>
+
+                    <h3>max_iter</h3>
+                    <p>Maximum Dimer iterations. Maximum number of outer Dimer steps allowed in the TS search.</p>
+                    <p><strong>(default: max_iter=200)</strong></p>
+
+                    <h3>use_mass_weight</h3>
+                    <p>Mass-weighted metric. If true, dot products and norms are evaluated in a mass-weighted metric, which can improve mode localization in systems with very different masses.</p>
+                    <ul>
+                        <li><strong>=false (default)</strong></li>
+                        <li><strong>=true</strong></li>
+                    </ul>
+
+                    <h3>remove_rigid</h3>
+                    <p>Remove rigid-body motion. If true, global translation and rotation are projected out of the dimer direction so that the search follows purely internal modes.</p>
+                    <p><strong>(default: remove_rigid=true)</strong></p>
+
+                    <h3>n_init</h3>
+                    <p>Initial orientation mode. Choice of how to construct the initial dimer direction n:</p>
+                    <ul>
+                        <li><strong>=random (default)</strong> – random vector</li>
+                        <li><strong>=force</strong> – aligned with the force</li>
+                        <li><strong>=given</strong> – use the user-specified n_given</li>
+                    </ul>
+
+                    <h3>n_given</h3>
+                    <p>User-defined initial n. Optional user-specified initial direction used when n_init="given". Its length must match 3N.</p>
+                    <p><strong>(default: n_given=None)</strong></p>
+
+                    <h3>save_traj</h3>
+                    <p>Write Dimer trajectory. Controls whether all intermediate structures are written to an XYZ trajectory file (*_dimer_traj.xyz).</p>
+                    <p><strong>(default: save_traj=true)</strong></p>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Output Files</h2>
+                    <p>The Dimer method produces several output files containing information about the transition state search process.</p>
+                    
+                    <h3>Main Output File: *.out</h3>
+                    <p>Contains detailed information about the dimer search process, including rotation and translation steps, convergence diagnostics, and final transition state properties.</p>
+
+                    <h3>Trajectory File: *_dimer_traj.xyz</h3>
+                    <p>XYZ trajectory file containing all intermediate structures generated during the dimer search, useful for visualizing the search path.</p>
+
+                    <h3>Final Structure</h3>
+                    <p>The final optimized transition state structure is written to output files for further analysis.</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

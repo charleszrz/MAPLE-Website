@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan - MAPLE</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="../index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="../general.html">About MAPLE</a></li>
+                    <li><a href="../documentation.html">Documentation</a></li>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Module: Scan (scan)</h1>
+                    <p class="tagline">Perform constrained potential energy scans in internal coordinates by systematically varying selected bond distances, bond angles, and dihedral angles around a reference geometry.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>The Scan module performs constrained potential energy scans in internal coordinates by systematically varying selected bond distances, bond angles, and dihedral angles around a reference geometry. For each user-defined scan coordinate, the module constructs a sequence of target values (based on atom indices, step size, and number of steps), then forms the full multidimensional grid via the Cartesian product of these sequences. At every grid point, the corresponding internal coordinates are enforced using internal-coordinate constraints, and a constrained geometry optimization is carried out to relax all remaining degrees of freedom, yielding a discrete mapping of the potential energy surface suitable for torsional profiles and reaction-path exploration. The module supports gradient-based constrained optimization with three algorithms: <strong><a href="scan_lbfgs.htm">LBFGS</a></strong> as the default workhorse, <strong>CG</strong> (Conjugate Gradient) as an alternative first-order method, and <strong><a href="scan_rfo.htm">RFO</a></strong> (Rational Function Optimization) as a Hessian-based option suitable for refining structures near stationary points.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Scan Module Unified Input Parameters</h2>
+                    <p>The Scan control line selects the geometry optimization algorithm used to relax each constrained structure along the scan path. The scan coordinates themselves (which bonds, angles, or dihedrals, and their step sizes and numbers of steps) are specified separately via the scan <strong>constraints</strong>, not in this unified control block.</p>
+                    
+                    <h3>method</h3>
+                    <p>Choose the geometry optimization algorithm for each constrained scan point:</p>
+                    <ul>
+                        <li>= <strong><a href="scan_lbfgs.htm">lbfgs</a></strong> (default)</li>
+                        <li>= <strong>cg</strong></li>
+                        <li>= <strong><a href="scan_rfo.htm">rfo</a></strong></li>
+                    </ul>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Output File Contents</h2>
+                    
+                    <h3>Output File (*.out)</h3>
+                    <p>When running Scan calculations, the main text output file (*.out) reports the progress of the scan over the grid of internal coordinates and the convergence information for each grid point. Compared to a single optimization, the main new feature is the "Scanning combination …" header that labels each point on the scan grid and shows which scan combination is currently being optimized.</p>
+                    <p class="code-example">Example:<br>Scanning combination 1/66: ['1.82', '62.02']<br><br>Coordinates<br>----------------------------------------------------------------------<br>Running the L-BFGS ...<br>0    C               -0.7997              -1.1662               0.1875<br>1    C                1.2861               0.0939               0.0202<br>...<br>21   H                2.8768              -0.4365              -1.3650<br><br>Maximum Force:           0.006107     0.010000                Yes<br>RMS Force:               0.005310     0.006000                Yes<br>Maximum Displacement:    0.026630     0.040000                Yes<br>RMS Displacement:        0.012205     0.025000                Yes</p>
+                    
+                    <p><strong>Explain:</strong></p>
+                    <ul>
+                        <li>The line <strong>Scanning combination 1/66: ['1.82', '62.02']</strong> shows the scan progress: 1/66 means this is the first combination out of 66 total scan grid points generated from the user-defined Scan commands in the input (e.g., S-lines specifying which bond/angle/dihedral is scanned and how many steps are used). The list in brackets (here ['1.82', '62.02']) records the actual target values of the scanned internal coordinates for this particular grid point, typically corresponding to the current bond length(s), angle(s), or dihedral(s) in their respective units (e.g., Å and degrees) as defined by the Scan setup.</li>
+                        <li>The "Coordinates" block lists the atomic indices, element symbols, and Cartesian coordinates (in <strong>Å</strong>) for the constrained structure associated with this scan point, following the same formatting as the coordinate print-out used elsewhere in the code.</li>
+                        <li>The line <strong>Running the L-BFGS ...</strong> indicates that the L-BFGS geometry optimizer is being applied to relax this configuration under the specified scan constraints.</li>
+                        <li>The four lines at the bottom report the standard convergence metrics for this scan grid point: Maximum Force, RMS Force, Maximum Displacement, and RMS Displacement. Each metric is printed with its current value, the corresponding threshold, and a "Yes/No" flag indicating whether that criterion is satisfied. When all four criteria are marked "Yes", the structure at this scan point is considered converged and the program proceeds to the next scan combination.</li>
+                    </ul>
+
+                    <h3>Scan Trajectory File (*.xyz)</h3>
+                    <p>In addition to the text output (*.out), Scan jobs produce an XYZ-format trajectory file that collects the optimized geometries for all scan grid points into a single multi-frame structure file. This file can be visualized or used as input for subsequent calculations. The format follows the standard multi-frame XYZ convention, which is also used by the program's XYZ reader.</p>
+                    <p class="code-example">Example:<br>22<br>Frame 1: 1<br>C  -0.7781   -1.0676   0.3211<br>C   1.3026    0.0521  -0.0283<br>...<br>H   2.9600   -0.3688  -1.3889<br>22</p>
+                    
+                    <p><strong>Explain:</strong></p>
+                    <ul>
+                        <li>The first line is the number of atoms in the system (here 22).</li>
+                        <li>The second line is a comment line (for example Frame 1: 1), which records the frame index and may optionally encode the scan combination or other metadata.</li>
+                        <li>The next N lines (where N is the number of atoms) give the element symbol followed by the three Cartesian coordinates (in Å) for each atom, representing the optimized geometry at that scan grid point.</li>
+                        <li>The next frame then starts with another atom-count line (e.g. the trailing 22 in the example) and repeats the same pattern for the following scan combination.</li>
+                    </ul>
+                    <p>Taken together, this multi-frame XYZ file provides a compact trajectory of all converged structures along the scan path and is suitable for visualization, analysis, or use as starting points for additional single-point, frequency, or transition-state calculations.</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Method: RFO - MAPLE</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="../index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="../general.html">About MAPLE</a></li>
+                    <li><a href="../documentation.html">Documentation</a></li>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Scan Method: RFO</h1>
+                    <p class="tagline">The RFO (Rational Function Optimization) method is a Hessian-based geometry optimizer that can be used within the Scan workflow to relax constrained structures in regions close to stationary points on the potential energy surface.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>The RFO (Rational Function Optimization) method is a Hessian-based geometry optimizer that can be used within the Scan workflow to relax constrained structures in regions close to stationary points on the potential energy surface. For each optimization step, the method builds the full Hessian matrix from the current structure, diagonalizes it to obtain eigenvalues and eigenvectors, and determines a shift parameter lambda by solving a one-dimensional nonlinear equation using Brent's root-finding algorithm. The geometry update is then obtained by solving the linear system (H − lambda I)x = −g, followed by a hard cap on the overall step length to keep the displacement within a prescribed maximum step size and avoid unphysical jumps. After updating the coordinates, RFO recomputes energy and forces, evaluates standard convergence metrics (maximum and RMS force, maximum and RMS displacement) against thresholds stored on the Atoms object, and either continues iterating or terminates when these criteria are satisfied or an internal iteration limit is reached.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Adjustable Parameters</h2>
+                    
+                    <h3>maxiter</h3>
+                    <p>Maximum number of RFO iterations. Sets the upper limit on how many RFO optimization cycles are performed. If this limit is reached before the transition state converges, the optimization stops and the latest geometry is returned.</p>
+                    <p><strong>(default: max_iter = 256)</strong></p>
+
+                    <h3>max_step_size</h3>
+                    <p>Maximum allowed step length. Upper bound on the displacement applied during each RFO update. This prevents overly large steps that could cause divergence or unphysical atomic movements during TS optimization.</p>
+                    <p><strong>(default: max_step_size = 0.1)</strong></p>
+
+                    <h3>tol</h3>
+                    <p>Convergence tolerance for λ (Brent root-search). Controls the numerical precision when solving for the RFO shift parameter λ using Brent's method. Smaller tolerances provide higher accuracy at the cost of additional iterations.</p>
+                    <p><strong>(default: tol = 1.0e-5)</strong></p>
+
+                    <h3>lambda_max_iter</h3>
+                    <p>Maximum number of λ root-search iterations. Upper bound on the number of Brent iterations used to solve the rational-function shift equation for λ. Prevents excessive looping in poorly conditioned TS regions.</p>
+                    <p><strong>(default: lambda_max_iter = 64)</strong></p>
+
+                    <h3>f_max_th</h3>
+                    <p>Maximum force threshold for TS convergence. Convergence criterion based on the maximum atomic force. The transition-state optimization terminates only when the maximum force falls below this threshold. This value must be provided by the caller.</p>
+
+                    <h3>f_rms_th</h3>
+                    <p>RMS force threshold for TS convergence. Root-mean-square force criterion applied to the entire structure. Used together with f_max_th to determine whether the TS search has converged.</p>
+
+                    <h3>dp_max_th</h3>
+                    <p>Maximum displacement threshold. Checks the largest atomic displacement during an RFO step. Ensures that geometry changes remain small near the saddle point.</p>
+
+                    <h3>dp_rms_th</h3>
+                    <p>RMS displacement threshold. Root-mean-square atomic displacement threshold used as a step-size convergence measure. All displacement criteria must be satisfied together for the TS to be considered converged.</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

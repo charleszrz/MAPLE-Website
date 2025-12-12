@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization Method: RFO - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="general.html">About MAPLE</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Optimization Method: RFO</h1>
+                    <p class="tagline">Rational Function Optimization with trust-region strategy for enhanced stability.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>RFO (Rational Function Optimization) is an alternative geometry optimization method available in the Optimization (opt) module. It employs a trust-region strategy that compares the predicted model energy change with the actual energy change to accept or reject steps, offering enhanced stability for systems with strong curvature or sensitive potential energy surfaces.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Default Parameters</h2>
+                    <p class="code-example">#opt(method=rfo, maxiter=256, trust_radius_init=0.2, trust_radius_min=1e-3, trust_radius_max=1.0, eta_shrink=0.75, eta_expand=1.75, evals_eps=1e-10, mu_margin=1e-8, max_bisect_it=60, write_traj=true, traj_every=1)</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Adjustable Parameters</h2>
+                    
+                    <h3>maxiter</h3>
+                    <p>Maximum number of optimization steps. Sets the upper limit for the optimization cycles. If convergence is not reached within this limit, the calculation stops and writes the final geometry.</p>
+
+                    <h3>trust_radius_init</h3>
+                    <p>Initial trust radius (Å). Defines the initial maximum allowed step size in mass-weighted coordinates. Larger values allow more aggressive first steps; smaller values are more conservative.</p>
+
+                    <h3>trust_radius_min</h3>
+                    <p>Minimum trust radius (Å). Sets the lower bound to which the trust radius may shrink. Prevents the optimizer from reducing the step size to an impractically small level.</p>
+
+                    <h3>trust_radius_max</h3>
+                    <p>Maximum trust radius (Å). The largest allowed trust-region size during optimization. Controls the upper limit for step expansion after successful iterations.</p>
+
+                    <h3>eta_shrink</h3>
+                    <p>Shrink threshold. The threshold for the quality ratio ρ (actual/predicted change) below which the step is rejected. If ρ < eta_shrink, the step is rejected and the trust radius is reduced.</p>
+
+                    <h3>eta_expand</h3>
+                    <p>Expand threshold. The threshold for ρ above which the trust radius is expanded. If ρ > eta_expand and the step lies on the boundary, the trust radius is increased to allow larger subsequent steps.</p>
+
+                    <h3>evals_eps</h3>
+                    <p>Eigenvalue regularization threshold. A small stabilizing value applied to very small Hessian eigenvalues. Prevents numerical instabilities in RFO step construction when eigenvalues are near zero.</p>
+
+                    <h3>mu_margin</h3>
+                    <p>Eigenvalue shift margin. Defines a safety margin below the minimum eigenvalue when determining the shift parameter μ.</p>
+
+                    <h3>max_bisect_it</h3>
+                    <p>Maximum bisection iterations. Sets the maximum iterations for solving the trust-region equation via bisection.</p>
+
+                    <h3>write_traj</h3>
+                    <p>Output optimization trajectory. Controls whether optimization snapshots are written to a trajectory file.</p>
+                    <ul>
+                        <li><strong>=true (default)</strong></li>
+                        <li><strong>=false</strong></li>
+                    </ul>
+
+                    <h3>traj_every</h3>
+                    <p>Trajectory output frequency (steps). Determines how often trajectory frames are written when write_traj = true. A value of 1 records every step; larger values record every N steps.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>III. Output Files</h2>
+                    <p>The RFO optimization method produces output files containing information about the trust-region optimization process and final results.</p>
+                    
+                    <h3>Main Output File: *.out</h3>
+                    <p>Contains detailed information about the RFO optimization process, including trust radius adjustments and convergence diagnostics.</p>
+
+                    <h3>Trajectory File</h3>
+                    <p>When write_traj=true, intermediate geometries are saved at the specified frequency for visualization of the optimization path.</p>
+
+                    <h3>Final Optimized Structure</h3>
+                    <p>The final optimized geometry is written to output files for further analysis.</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

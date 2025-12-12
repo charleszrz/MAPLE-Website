@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition State Search - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="general.html">About MAPLE</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Transition State Search (TS) Module</h1>
+                    <p class="tagline">Find first-order saddle point structures on the potential energy surface.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>The Transition State (TS) Search module is used to find first-order saddle point structures on the potential energy surface. This module can be combined with different search algorithms to handle various types of reaction path problems. Currently, MAPLE supports the following four TS methods:</p>
+                    <ul>
+                        <li><strong><a href="ts_prfo.html">prfo</a></strong> (default method): RS-PRFO single-point saddle point optimization</li>
+                        <li><strong><a href="ts_neb.html">neb</a></strong>: Nudged Elastic Band path search + (optional) CI-NEB + RS-PRFO</li>
+                        <li><strong><a href="ts_string.html">string</a></strong>: Reaction path-based GSM/String method</li>
+                        <li><strong><a href="ts_dimmer.html">dimer</a></strong>: Dimer TS search (requires only one initial structure)</li>
+                    </ul>
+                    <p>Each method's input format is set through the #ts(...) command.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. TS Module Unified Input Parameters</h2>
+                    <p>Default parameters for the TS module are as follows, and the adjustable parameters include:</p>
+                    
+                    <h3>method</h3>
+                    <p>Choose the TS search algorithm:</p>
+                    <ul>
+                        <li>= <strong><a href="ts_prfo.html">prfo</a></strong> (default)</li>
+                        <li>= <strong><a href="ts_neb.html">neb</a></strong></li>
+                        <li>= <strong><a href="ts_string.html">string</a></strong></li>
+                        <li>= <strong><a href="ts_dimmer.html">dimer</a></strong></li>
+                    </ul>
+
+                    <h3>maxiter</h3>
+                    <p>Maximum number of iterations, shared across all methods.</p>
+                    <p><strong>default: maxiter=200</strong></p>
+
+                    <h3>neb_image</h3>
+                    <p>Number of intermediate images ("replicas") used to discretize the reaction path for TS searches that employ multiple images along a path. This parameter has no effect for single-structure methods such as prfo or dimer.</p>
+                    <p><strong>default: neb_images=7</strong></p>
+
+                    <h3>level</h3>
+                    <p>Defines the overall aggressiveness or rigor of the transition-state (TS) search strategy.</p>
+                    <p><strong>=medium (default)</strong></p>
+
+                    <h3>refine</h3>
+                    <p>Specifies whether additional post-processing is applied after the main NEB/TS path search to improve the quality of the transition state.</p>
+                    <ul>
+                        <li><strong>=None (default)</strong></li>
+                        <li><strong>=cineb</strong></li>
+                        <li><strong>=nebts</strong></li>
+                    </ul>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Input Structure Requirements</h2>
+                    <p><strong><a href="ts_prfo.html">PRFO</a></strong> and <strong><a href="ts_dimmer.html">Dimer</a></strong> require only one initial structure because they are <strong>local transition-state search methods</strong>. These algorithms explore the local curvature of the potential-energy surface around the starting geometry and ascend toward the nearest saddle point. As a result, <strong>a single starting geometry is sufficient (e.g., initial_structure.xyz)</strong>.</p>
+                    
+                    <p><strong><a href="ts_neb.html">NEB</a></strong> and <strong><a href="ts_string.html">STRING</a></strong>, in contrast, require two structures—the reactant and the product—because they are <strong>path-based methods</strong>. They construct and optimize a <strong>reaction pathway</strong> between <strong>two known minima</strong> on the potential-energy surface. Therefore, both <strong>endpoint geometries</strong> must be provided <strong>(e.g., reactant.xyz and product.xyz)</strong>, and the transition state is identified as the highest-energy point along the optimized path.</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

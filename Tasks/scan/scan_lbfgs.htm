@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Method: LBFGS - MAPLE</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="../index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="../general.html">About MAPLE</a></li>
+                    <li><a href="../documentation.html">Documentation</a></li>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Scan Method: LBFGS</h1>
+                    <p class="tagline">The LBFGS (Limited-memory Broyden–Fletcher–Goldfarb–Shanno) method is the default geometry optimizer in the Scan module and is used to relax each constrained structure along the scan grid.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>The LBFGS (Limited-memory Broyden–Fletcher–Goldfarb–Shanno) method is the default geometry optimizer in the Scan module and is used to relax each constrained structure along the scan grid. For every scan point, it iteratively updates atomic positions using a compact history of past displacements and force changes to build a low-rank approximation to the inverse Hessian, enabling efficient convergence without storing the full Hessian matrix. A maximum per-step atomic displacement (maxstep) is enforced to prevent unstable jumps, and at each iteration the method evaluates energy, forces, and standard convergence metrics (maximum/RMS force and maximum/RMS displacement). The optimization for a given scan point terminates once all force and displacement thresholds are satisfied or the maximum number of iterations is reached, and the resulting optimized structure is written to an _opt.xyz file.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Adjustable Parameters</h2>
+                    
+                    <h3>memory</h3>
+                    <p>L-BFGS history size. Controls how many previous optimization steps are retained to build the approximate Hessian of the potential energy surface; larger values use more history and can improve convergence on difficult landscapes, while smaller values keep the optimizer lighter but more local in character.</p>
+                    <p><strong>(default: memory = 5)</strong></p>
+
+                    <h3>curvature</h3>
+                    <p>Initial Hessian scaling factor. Sets the initial effective stiffness of the system before any optimization history is accumulated, thereby controlling how conservative or aggressive the first few LBFGS steps are; its influence naturally decreases as more iterative curvature information is gathered.</p>
+                    <p><strong>(default: curvature = 70.0)</strong></p>
+
+                    <h3>maxstep</h3>
+                    <p>Maximum allowed atomic displacement (Å). Limits the largest geometry change permitted in a single optimization step, preventing atoms from moving too far at once and helping to avoid overshooting, numerical instability, or unphysical structural distortions during relaxation.</p>
+                    <p><strong>(default: maxstep = 0.2)</strong></p>
+
+                    <h3>maxiteration</h3>
+                    <p>Maximum number of optimization steps. Defines the upper bound on how many LBFGS iterations are allowed for one optimization run (e.g., one scan point), acting as a safety cap when convergence is slow or unattainable while typical cases terminate earlier upon meeting force and displacement criteria.</p>
+                    <p><strong>(default: maxiteration = 128)</strong></p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

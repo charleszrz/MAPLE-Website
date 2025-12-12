@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="general.html">About MAPLE</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Module: Optimization (opt)</h1>
+                    <p class="tagline">Perform geometry optimization to locate a stationary point on the potential energy surface.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>The Optimization (OPT) module performs geometry optimization to locate a stationary point on the potential energy surface.
+                        Starting from an initial molecular structure, the algorithm iteratively updates atomic positions to reduce the forces acting on the atoms until the predefined convergence criteria are satisfied.
+                        The optimization process minimizes the forces acting on the atoms, typically using algorithms such as <strong><a href="opt_LBFGS.html">LBFGS</a></strong> (Limited-memory Broyden-Fletcher-Goldfarb–Shanno), <strong><a href="opt_RFO.html">RFO</a></strong> (Rational Function Optimization), or <strong><a href="opt_SD.html">SD</a></strong> (Steepest Descent).</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Input Parameters</h2>
+                    <p>The optimization task is invoked with:</p>
+                    <p class="code-example">#opt(method=lbfgs, maxiter=200, convergence=1e-5)</p>
+                    <p>The above represents the default settings. Adjustable parameters include:</p>
+                    
+                    <h3>method</h3>
+                    <p>Optimization algorithm:</p>
+                    <ul>
+                        <li>= <strong><a href="opt_LBFGS.html">lbfgs</a></strong> (default)</li>
+                        <li>= <strong><a href="opt_RFO.html">rfo</a></strong></li>
+                        <li>= <strong><a href="opt_SD.html">sd</a></strong> (no additional parameters)</li>
+                    </ul>
+
+                    <h3>maxiter</h3>
+                    <p>Maximum number of optimization steps.</p>
+
+                    <h3>convergence</h3>
+                    <p>Force convergence threshold (Hartree).</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Output File Contents</h2>
+                    <p>Three categories of information are printed:</p>
+                    
+                    <h3>Updated geometry during the optimization</h3>
+                    <p class="code-example">Example:<br>Iteration: 54<br><br>Coordinates<br>----------------------------------------------------------------------<br>0   C               -0.8650              -0.4669               0.4322<br>1   C                1.4518               0.3063              -0.0433<br>...<br>21  H                2.6583              -0.7351              -1.4826</p>
+
+                    <h3>Final optimization results</h3>
+                    <p>The final section reports the optimized energy (in <strong>Hartree</strong>) and the four convergence metrics: <strong>Maximum Force</strong>; <strong>RMS Force</strong>; <strong>Maximum Displacement</strong>; <strong>RMS Displacement</strong>.</p>
+                    <p>Each metric includes its value, the corresponding threshold, and a boolean indicator showing whether the criterion is satisfied. If all criteria are met, the program confirms successful convergence and reports the iteration number.</p>
+                    <p class="code-example">Example:<br>Energy:                -383.655532<br>Convergence criteria    Is converged<br>Maximum Force:           0.002118    0.002850     Yes<br>RMS Force:               0.001226    0.001900     Yes<br>Maximum Displacement:    0.002501    0.003150     Yes<br>RMS Displacement:        0.002010    0.002100     Yes<br><br>LBFGS optimization converged at iteration 54.</p>
+
+                    <h3>Output File Location</h3>
+                    <p class="code-example">Example:<br>Final optimized structure written to:<br>/path/to/output/file.xyz</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

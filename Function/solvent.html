@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function: Solvation - MAPLE</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="../index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="../general.html">About MAPLE</a></li>
+                    <li><a href="../documentation.html">Documentation</a></li>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Function: Solvation</h1>
+                </section>
+
+                <section class="new-section">
+                    <p>The Solv module in MAPLE is designed to incorporate solvent effects into various calculations, transitioning from ideal gas-phase conditions to more realistic solution-phase environments. It offers two complementary approaches for solvation: one is an implicit solvent model based on geometry-dependent Born radii (GB/GBSA), which efficiently accounts for long-range polarization and dielectric screening effects by adjusting Coulombic interactions with the dielectric constant and atomic charges. The other approach involves explicit solvation, where solvent molecules are added around the solute based on pre-built solvent crystal box templates. This method automatically fills the solvation shell and removes solvent molecules that collide significantly with the solute, with the option to freeze outer solvent molecules while allowing the inner solvation layers to relax along with the solute. By combining both implicit and explicit solvation techniques, the Solv module captures both long-range dielectric effects and localized solvation phenomena such as hydrogen bonding or coordination, providing a more accurate description of reaction barriers, stability, and thermodynamic properties in solution-phase calculations.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>Solvent Command: #solv</h2>
+                    <p>This command allows you to define the solvent environment for your simulation, whether you're using an implicit solvation model or adding an explicit solvation shell. You can specify the type of solvent, the radius of the solvation shell, set a collision cutoff, and choose whether to freeze the outer solvent molecules during the simulation.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>Adjustable Parameters</h2>
+                    
+                    <h3>implicit</h3>
+                    <p>Controls whether an implicit solvent correction is applied in the calculator.</p>
+                    <p><strong>Default: implicit=None</strong></p>
+                    <p>=gbsa – enable the generalized Born (GBSA) implicit solvent model. In this case, atomic charges are computed (QEq) and a GBSA correction is added to the energy and forces.</p>
+
+                    <h3>explicit</h3>
+                    <p>Specifies the explicit solvent shell, defined using a PDB template file. If not set, no explicit solvent will be added to the system.</p>
+                    <p><strong>Default: explicit=None</strong></p>
+
+                    <h3>radius</h3>
+                    <p>Defines the radius of the solvation shell around the solute. Solvent molecules within this radius will be kept in the system, while those outside it may be excluded (in Å).</p>
+                    <p><strong>Default: radius=10.0</strong></p>
+
+                    <h3>clash_cutoff</h3>
+                    <p>Sets the distance threshold for solvent-solute collisions. Solvent molecules whose atoms are closer to the solute than this threshold will be excluded from the simulation (in Å).</p>
+                    <p><strong>Default: clash_cutoff=1.5</strong></p>
+
+                    <h3>fix_dis</h3>
+                    <p>Specifies a distance threshold to freeze outer solvent molecules. Solvent molecules further than this distance from the solute center will be fixed and not allowed to move during the simulation (in Å).</p>
+                    <p><strong>Default: fix_dis=8.0</strong></p>
+                </section>
+
+                <section class="new-section">
+                    <h2>Practical Example of Usage</h2>
+                    
+                    <h3>Implicit Solvent Only</h3>
+                    <p>In this example, the simulation uses only an implicit GBSA solvent model. No explicit solvent shell is constructed, so the effect of the solvent is included only through the implicit correction in the calculator.</p>
+                    <p><strong>Example:</strong></p>
+                    <p><code>#solv(implicit=gbsa)</code></p>
+
+                    <h3>Explicit Solvent Only</h3>
+                    <p>In this example, the simulation uses only an explicit water solvent shell around the solute. The solvation shell has a radius of 12 Å, any solvent molecules that come within 1.5 Å of the solute are excluded, and solvent molecules further than 8 Å from the solute are fixed in place. No implicit solvent model is applied.</p>
+                    <p><strong>Example:</strong></p>
+                    <p><code>#solv(explicit=water, radius=12.0, clash_cutoff=1.5, fix_dis=8.0)</code></p>
+                </section>
+
+                <section class="new-section">
+                    <h2>Appendix S1: Explicit Solvent Templates Included in MAPLE</h2>
+                    <p>Below are the available explicit solvent models you can choose from.</p>
+                    <ul style="columns: 3; column-gap: 2rem; list-style: none; padding-left: 0;">
+                        <li>2methyl2propanol</li>
+                        <li>2methylpyridine</li>
+                        <li>4methyl2pentanone</li>
+                        <li>aceticacid</li>
+                        <li>acetone</li>
+                        <li>acetonitrile</li>
+                        <li>acetophenone</li>
+                        <li>aniline</li>
+                        <li>anisole</li>
+                        <li>benzene</li>
+                        <li>benzonitrile</li>
+                        <li>benzylalcohol</li>
+                        <li>bromobenzene</li>
+                        <li>bromoethane</li>
+                        <li>bromoform</li>
+                        <li>bromooctane</li>
+                        <li>butanol</li>
+                        <li>butanone</li>
+                        <li>butylacetate</li>
+                        <li>butylbenzene</li>
+                        <li>carbontet</li>
+                        <li>chlorobenzene</li>
+                        <li>chloroform</li>
+                        <li>chlorohexane</li>
+                        <li>cyclohexane</li>
+                        <li>cyclohexanone</li>
+                        <li>decalin</li>
+                        <li>decane</li>
+                        <li>decanol</li>
+                        <li>dibromoethane</li>
+                        <li>dibutylether</li>
+                        <li>dichloroethane</li>
+                        <li>diethylamine</li>
+                        <li>diethylether</li>
+                        <li>diisopropylether</li>
+                        <li>dimethylacetamide</li>
+                        <li>dimethylformamide</li>
+                        <li>dimethylpyridine</li>
+                        <li>dimethylsulfoxide</li>
+                        <li>dodecane</li>
+                        <li>ethanol</li>
+                        <li>ethoxybenzene</li>
+                        <li>ethylacetate</li>
+                        <li>ethylbenzene</li>
+                        <li>fluorobenzene</li>
+                        <li>fluoroctane</li>
+                        <li>heptane</li>
+                        <li>heptanol</li>
+                        <li>hexadecane</li>
+                        <li>hexadecyliodide</li>
+                        <li>hexane</li>
+                        <li>hexanol</li>
+                        <li>iodobenzene</li>
+                        <li>isobutanol</li>
+                        <li>isooctane</li>
+                        <li>isopropanol</li>
+                        <li>isopropylbenzene</li>
+                        <li>isopropyltoluene</li>
+                        <li>mcresol</li>
+                        <li>mesitylene</li>
+                        <li>methanol</li>
+                        <li>methoxyethanol</li>
+                        <li>methylenechloride</li>
+                        <li>methylformamide</li>
+                        <li>nitrobenzene</li>
+                        <li>nitroethane</li>
+                        <li>nitromethane</li>
+                        <li>nonane</li>
+                        <li>nonanol</li>
+                        <li>octane</li>
+                        <li>octanol</li>
+                        <li>odichlorobenzene</li>
+                        <li>old_aceticacid</li>
+                        <li>old_tributylphosphate</li>
+                        <li>onitrotoluene</li>
+                        <li>pentadecane</li>
+                        <li>pentane</li>
+                        <li>pentanol</li>
+                        <li>perfluorobenzene</li>
+                        <li>phenylether</li>
+                        <li>propanol</li>
+                        <li>pyridine</li>
+                        <li>secbutanol</li>
+                        <li>secbutylbenzene</li>
+                        <li>tbutylbenzene</li>
+                        <li>tetrachloroethene</li>
+                        <li>tetrahydrofuran</li>
+                        <li>tetrahydrothiophenedioxide</li>
+                        <li>tetralin</li>
+                        <li>toluene</li>
+                        <li>tributylphosphate</li>
+                        <li>triethylamine</li>
+                        <li>trimethylbenzene</li>
+                        <li>undecane</li>
+                        <li>water</li>
+                        <li>xylene</li>
+                    </ul>
+                </section>
+
+                <section class="new-section">
+                    <h2>Appendix S2: Implicit Solvent Models Included in MAPLE</h2>
+                    <ul style="columns: 3; column-gap: 2rem; list-style: none; padding-left: 0;">
+                        <li>thf</li>
+                        <li>toluene</li>
+                        <li>trichloromethane</li>
+                        <li>water</li>
+                        <li>acetone</li>
+                        <li>acetonitrile</li>
+                        <li>benzene</li>
+                        <li>cs2</li>
+                        <li>dichloromethane</li>
+                        <li>dmf</li>
+                        <li>dmso</li>
+                        <li>ether</li>
+                        <li>methanol</li>
+                        <li>nhexan</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>

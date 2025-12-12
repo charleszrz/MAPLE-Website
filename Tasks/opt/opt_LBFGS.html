@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization Method: LBFGS - MAPLE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="general.html">About MAPLE</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="welcome-section">
+                    <h1>Optimization Method: LBFGS</h1>
+                    <p class="tagline">Default geometry optimization method using limited historical gradient information.</p>
+                </section>
+
+                <section class="new-section">
+                    <p>LBFGS is the <strong>default</strong> geometry optimization method in the Optimization (opt) module. It efficiently determines descent directions using limited historical gradient information, achieving fast and stable convergence with low memory requirements. It is suitable for most systems and recommended as the general-purpose optimization method.</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>I. Default Parameters</h2>
+                    <p class="code-example">#opt(method=lbfgs, memory=5, curvature=70.0, maxstep=0.2, maxiteration=128, write_traj=false)</p>
+                </section>
+
+                <section class="new-section">
+                    <h2>II. Adjustable Parameters</h2>
+                    
+                    <h3>memory</h3>
+                    <p>L-BFGS history size. Controls the number of historical iteration steps stored to approximate the Hessian matrix (surface curvature).</p>
+
+                    <h3>curvature</h3>
+                    <p>Initial curvature scaling. Sets the initial approximation for the inverse Hessian diagonal elements, affecting the initial step size and convergence behavior.</p>
+
+                    <h3>maxstep</h3>
+                    <p>Maximum step size (Å). Limits the maximum displacement per atom in a single optimization step to prevent overly large moves that could destabilize the calculation.</p>
+
+                    <h3>maxiteration</h3>
+                    <p>Maximum number of optimization steps. Sets the upper limit for the optimization cycles. If convergence is not reached within this limit, the calculation stops and writes the final geometry.</p>
+
+                    <h3>write_traj</h3>
+                    <p>Write trajectory file. Controls whether intermediate geometries are saved to a trajectory file for visualization and analysis.</p>
+                    <ul>
+                        <li><strong>=false (default)</strong></li>
+                        <li><strong>=true</strong></li>
+                    </ul>
+                </section>
+
+                <section class="new-section">
+                    <h2>III. Output Files</h2>
+                    <p>The LBFGS optimization method produces output files containing information about the optimization process and final results.</p>
+                    
+                    <h3>Main Output File: *.out</h3>
+                    <p>Contains detailed information about the optimization process, including energy and force convergence at each step.</p>
+
+                    <h3>Trajectory File (optional)</h3>
+                    <p>When write_traj=true, intermediate geometries are saved for visualization of the optimization path.</p>
+
+                    <h3>Final Optimized Structure</h3>
+                    <p>The final optimized geometry is written to output files for further analysis.</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>
