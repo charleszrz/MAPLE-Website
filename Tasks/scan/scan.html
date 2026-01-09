@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scan - MAPLE</title>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
     <main>
         <div class="content-wrapper">
             <aside class="navigation-section">
-                <a href="../index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <a href="../../index.html"><img src="../../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
                 <h2>Navigation</h2>
                 <ul class="nav-list">
                     <li><a href="#tutorials">User Guide</a></li>
-                    <li><a href="../general.html">About MAPLE</a></li>
-                    <li><a href="../documentation.html">Documentation</a></li>
-                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../../general.html">About MAPLE</a></li>
+                    <li><a href="../../documentation.html">Documentation</a></li>
+                    <li><a href="../../index.html">Home</a></li>
                     <li><a href="#articles">Articles</a></li>
                     <li><a href="#download">Downloads</a></li>
                     <li><a href="#issues">Report an issue</a></li>
@@ -27,7 +27,6 @@
             <div class="main-content">
                 <section class="welcome-section">
                     <h1>Module: Scan (scan)</h1>
-                    <p class="tagline">Perform constrained potential energy scans in internal coordinates by systematically varying selected bond distances, bond angles, and dihedral angles around a reference geometry.</p>
                 </section>
 
                 <section class="new-section">
@@ -52,7 +51,8 @@
                     
                     <h3>Output File (*.out)</h3>
                     <p>When running Scan calculations, the main text output file (*.out) reports the progress of the scan over the grid of internal coordinates and the convergence information for each grid point. Compared to a single optimization, the main new feature is the "Scanning combination …" header that labels each point on the scan grid and shows which scan combination is currently being optimized.</p>
-                    <p class="code-example">Example:<br>Scanning combination 1/66: ['1.82', '62.02']<br><br>Coordinates<br>----------------------------------------------------------------------<br>Running the L-BFGS ...<br>0    C               -0.7997              -1.1662               0.1875<br>1    C                1.2861               0.0939               0.0202<br>...<br>21   H                2.8768              -0.4365              -1.3650<br><br>Maximum Force:           0.006107     0.010000                Yes<br>RMS Force:               0.005310     0.006000                Yes<br>Maximum Displacement:    0.026630     0.040000                Yes<br>RMS Displacement:        0.012205     0.025000                Yes</p>
+                    <p>Example:</p>
+                    <p><code>Scanning combination 1/66: ['1.82', '62.02']<br><br>Coordinates<br>----------------------------------------------------------------------<br>Running the L-BFGS ...<br>0    C               -0.7997              -1.1662               0.1875<br>1    C                1.2861               0.0939               0.0202<br>...<br>21   H                2.8768              -0.4365              -1.3650<br><br>Maximum Force:           0.006107     0.010000                Yes<br>RMS Force:               0.005310     0.006000                Yes<br>Maximum Displacement:    0.026630     0.040000                Yes<br>RMS Displacement:        0.012205     0.025000                Yes</code></p>
                     
                     <p><strong>Explain:</strong></p>
                     <ul>
@@ -64,7 +64,8 @@
 
                     <h3>Scan Trajectory File (*.xyz)</h3>
                     <p>In addition to the text output (*.out), Scan jobs produce an XYZ-format trajectory file that collects the optimized geometries for all scan grid points into a single multi-frame structure file. This file can be visualized or used as input for subsequent calculations. The format follows the standard multi-frame XYZ convention, which is also used by the program's XYZ reader.</p>
-                    <p class="code-example">Example:<br>22<br>Frame 1: 1<br>C  -0.7781   -1.0676   0.3211<br>C   1.3026    0.0521  -0.0283<br>...<br>H   2.9600   -0.3688  -1.3889<br>22</p>
+                    <p>Example:</p>
+                    <p><code>22<br>Frame 1: 1<br>C  -0.7781   -1.0676   0.3211<br>C   1.3026    0.0521  -0.0283<br>...<br>H   2.9600   -0.3688  -1.3889<br>22</code></p>
                     
                     <p><strong>Explain:</strong></p>
                     <ul>
