@@ -38,25 +38,39 @@
                         <li>Try the introduction tutorial.</li>
                     </ul>
                 </section>
-
-                <section class="news-section">
-                    <h2>News</h2>
-                    <div class="news-item">
-                        <p><strong>"MAPLE 2025.3 is available."</strong> Read here for an overview of the patch release notes - 12 September 2025</p>
-                    </div>
-                    <div class="news-item">
-                        <p><strong>"MAPLE 2025.2 is available."</strong> Read here for an overview of the patch release notes - 3 June 2025</p>
-                    </div>
-                    <div class="news-item">
-                        <p><strong>"MAPLE 2025.1 is available."</strong> Read here for an overview of the patch release notes - 11 March 2025</p>
-                    </div>
-                </section>
             </div>
+
+            <aside class="news-section">
+                <h2>News</h2>
+                <div class="news-slider">
+                    <div class="news-slide active">
+                        <img src="image.png" alt="MAPLE 2025.3 is available - 12 September 2025">
+                        <div class="news-caption">MAPLE 2025.3 is available - 12 September 2025</div>
+                    </div>
+                    <div class="news-slide">
+                        <img src="news2.jpg" alt="MAPLE 2025.2 is available - 3 June 2025">
+                        <div class="news-caption">MAPLE 2025.2 is available - 3 June 2025</div>
+                    </div>
+                </div>
+            </aside>
         </div>
     </main>
 
     <footer>
         <p>&copy; 2025, MAPLE development team.</p>
     </footer>
+
+    <script>
+        const slides = document.querySelectorAll('.news-slide');
+        let currentSlide = 0;
+
+        function rotateSlides() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(rotateSlides, 5000);
+    </script>
 </body>
 </html>
