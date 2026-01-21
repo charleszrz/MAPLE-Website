@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set-Up: Settings - MAPLE</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <main>
+        <div class="content-wrapper">
+            <aside class="navigation-section">
+                <a href="../index.html"><img src="../logo.jpg" alt="MAPLE Logo" style="width: 80px; height: 80px; object-fit: contain; display: block; margin-bottom: 1.5rem; cursor: pointer; background: transparent; border: none;"></a>
+                <h2>Navigation</h2>
+                <ul class="nav-list">
+                    <li><a href="#tutorials">User Guide</a></li>
+                    <li><a href="../general.html">About MAPLE</a></li>
+                    <li><a href="../documentation.html">Documentation</a></li>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <li><a href="#issues">Report an issue</a></li>
+                    <li><a href="#development">Development</a></li>
+                </ul>
+            </aside>
+
+            <div class="main-content">
+                <section class="new-section">
+                    <h2>Part I - Setting</h2>
+                    <p>MAPLE input files (.inp) consist of three main sections, each for specific instructions and parameters, as detailed below.</p>
+                    <p>All control commands in the .inp file begin with the "#" symbol. This section defines the calculation type, selects the model, specifies the computational device, sets method parameters, and configures other global options.
+                    During input processing, these commands are parsed first to determine the calculation task and its parameter settings.</p>
+                    
+                    <h3>#model=</h3>
+                    <p>Specifies the machine learning potential model to be used for the calculation. Supported models include ani2x, ani1x, ani1ccx, ani1xnr, maceoff23s, maceoff23m, maceoff23l, egret, aimnet2, and uma.</p>
+                    <p class="code-example">Example: #model = ani2x</p>
+                
+                    <h3>#device=</h3>
+                    <p>Specifies the hardware device on which the calculation will run. Supported options include cpu, cuda, gpu0, gpu1, etc.</p>
+                    <p class="code-example">Example: #device = cpu<br>#device = cuda<br>#device = gpu0</p>
+                
+                    <h3>#gpuid=</h3>
+                    <p>Specifies the GPU device ID. Only integer values such as 0 or 1 are accepted.</p>
+                    <p class="code-example">Example: #gpuid = 0</p>
+                
+                    <h3>#d4=</h3>
+                    <p>A global boolean flag used to enable or disable the D4 dispersion correction.</p>
+                    <p class="code-example">Example: #d4 = true<br>#d4 = false<br>#d4 (equivalent to #d4 = true)</p>
+                
+                    <h3>Task type configuration</h3>
+                    <p>We support several computational tasks, including <strong><a href="Tasks/singlepoint.html">sp</a></strong> (Single Point), <strong><a href="Tasks/opt/optimization.html">opt</a></strong> (Optimization), <strong><a href="Tasks/scan/scan.htm">scan</a></strong> (Scan), <strong>freq</strong> (Frequency), <strong><a href="Tasks/ts/ts.html">ts</a></strong> (Transition State), and <strong><a href="Tasks/irc/irc.html">irc</a></strong> (IRC).</p>
+                    <p>Task Syntax: <strong>#taskname(parameters)</strong> A task is invoked by writing the task keyword after "#", and parameter values (if any) are set inside parentheses.</p>
+                    <p class="code-example">Example: #opt(method=lbfgs, convergence=1e-5)</p>
+                    <p><strong>Note:</strong></p>
+                    <ul>
+                        <li>If only the task name is given and no parameters are provided, the program automatically uses the default parameter set for that job type. Example: #ts</li>
+                        <li>If the input file does not define any task type, MAPLE automatically performs a <a href="Tasks/singlepoint.html">single point</a> energy calculation (sp) using the default settings.</li>
+                    </ul>
+                    <h3>Solvent - #solv</h3>
+                    <p>#solv is used in MAPLE to activate solvent treatment. This directive enables either implicit solvent modeling or the construction of explicit solvation environments. For detailed descriptions of available modes, parameters, and usage examples, please refer to the Solvent section.</p>
+                </section>
+
+               
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025, MAPLE development team.</p>
+    </footer>
+</body>
+</html>
